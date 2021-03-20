@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>array</title>
+    <meta charset="utf-8" />
+    <script>
+      function init() {
+        const input = [1, 2, 3, 2, 3, 5, 1];
+        console.log(getBonus(input).toString());
+      }
+
+      function getBonus(inputArray) {
+        const length = inputArray.length;
+        let result = new Array(length).fill(1);
+
+        result[0] += inputArray[1] > inputArray[0] ? 0 : 1;
+        result[length - 1] +=
+          inputArray[length - 2] > inputArray[length - 1] ? 0 : 1;
+
+        for (let i = 1; i < length - 1; i++) {
+          const isBetterThanRightSide = inputArray[i] > inputArray[i + 1];
+          const isBetterThanLeftSide = inputArray[i] > inputArray[i - 1];
+
+          if (isBetterThanRightSide) {
+            result[i] += 1;
+          }
+
+          if (isBetterThanLeftSide) {
+            result[i] += 1;
+          }
+        }
+
+        return result;
+      }
+    </script>
+  </head>
+  <body onload="init()"></body>
+</html>
+<!-- 
+
+let result = [];
+const length = inputArray.length;
+
+result[0] = inputArray[1] > inputArray[0] ? 1 : 2;
+result[length - 1] =
+  inputArray[length - 2] > inputArray[length - 1] ? 1 : 2;
+
+for (let i = 1; i < length - 1; i++) {
+  const isBetterThanRightSide = inputArray[i] > inputArray[i + 1];
+
+  if (inputArray[i] > inputArray[i - 1]) {
+    result[i] = isBetterThanRightSide ? 3 : 2;
+  } else {
+    result[i] = isBetterThanRightSide ? 2 : 1;
+  }
+}
+
+for (let i = 1; i < length - 1; i++) {
+  if (inputArray[i] > inputArray[i - 1]) {
+    if (inputArray[i] > inputArray[i + 1]) {
+      result[i] = 3;
+    } else {
+      result[i] = 2;
+    }
+  } else {
+    if (inputArray[i] > inputArray[i + 1]) {
+      result[i] = 2;
+    } else {
+      result[i] = 1;
+    }
+  }
+} -->

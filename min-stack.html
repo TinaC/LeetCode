@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>array</title>
+    <meta charset="utf-8" />
+    <script>
+      // https://leetcode.com/problems/min-stack/
+      class Stack {
+        constructor() {
+          this._stack = new Array(10);
+          this._stackLength = 0;
+        }
+
+        size() {
+          return this._stackLength;
+        }
+
+        isEmpty() {
+          return this.size() === 0;
+        }
+
+        _enlarge() {
+          this._stack.length = this._stack.length * 2;
+        }
+
+        top() {
+          if (this.isEmpty()) {
+            throw new RangeError("this array is empty");
+          }
+
+          return this._stack[this.size() - 1];
+        }
+
+        push(element) {
+          this._stackLength++;
+          if (this.size() === this.length) {
+            this._enlarge();
+          }
+
+          this._stack[this.size() - 1] = element;
+        }
+
+        pop() {
+          if (this.isEmpty()) {
+            throw new RangeError("this array is empty");
+          }
+
+          this._stack[this.size() - 1] = null;
+          this._stackLength--;
+        }
+      }
+
+      class MinStack {
+        constructor() {
+          this.stack = new Stack();
+          this.minStack = new Stack();
+        }
+
+        push(element) {
+          if (this.minStack.isEmpty() || this.minStack.top() >= element) {
+            this.minStack.push(element);
+          }
+
+          this.stack.push(element);
+        }
+
+        // Removes the element on top of the stack
+        pop() {
+          if (
+            !this.minStack.isEmpty() &&
+            this.stack.top() === this.minStack.top()
+          ) {
+            this.minStack.pop();
+          }
+
+          this.stack.pop();
+        }
+
+        // Get the top element
+        top() {
+          return this.stack.top();
+        }
+
+        // Retrieve the minimum elmement
+        getMin() {
+          return this.minStack.top();
+        }
+      }
+
+      function init() {
+        const stack = new MinStack();
+
+        stack.push(10);
+        stack.push(9);
+        stack.push(10);
+        stack.push(9);
+
+        stack.pop();
+        stack.push(2);
+        console.log(stack.getMin());
+      }
+    </script>
+  </head>
+
+  <body onload="init()"></body>
+</html>
+<!-- 
+            console.log("Pop");
+          console.log(this.stack);
+          console.log("====");
+Array.prototype._enlarge = function() {
+  this.length = this.length * 2;
+};
+
+Array.prototype._push = function(element) {
+  this.stackLength++;
+  if (this.stackLength === this.length) {
+    this._enlarge();
+  }
+
+  this[this.stackLength - 1] = element;
+};
+
+Array.prototype._pop = function() {
+  if (this.stackLength == 0) {
+    throw new RangeError("this array is empty");
+  }
+
+  this[this.stackLength - 1] = null;
+  this.stackLength--;
+};
+
+Array.prototype._top = function() {
+  if (this.stackLength == 0) {
+    throw new RangeError("this array is empty");
+  }
+
+  return this[this.stackLength - 1];
+};
+
+class Stack {
+  constructor() {
+    this.stack = new Array(10);
+    this.stack.stackLength = 0;
+  }
+}
+
+class minStack {
+  constructor() {
+    this.stack = new Array(10);
+    this.stack.stackLength = 0;
+
+    this.minStack = new Array(10);
+    this.minStack.stackLength = 0;
+  }
+
+  push(element) {
+    if (
+      this.minStack.stackLength === 0 ||
+      this.minStack._top() >= element
+    ) {
+      this.minStack._push(element);
+    }
+
+    this.stack._push(element);
+  }
+
+  // Removes the element on top of the stack
+  pop() {
+    if (
+      this.minStack.stackLength !== 0 &&
+      this.stack._top() === this.minStack._top()
+    ) {
+      this.minStack._pop();
+    }
+
+    this.stack._pop();
+  }
+
+  // Get the top element
+  top() {
+    const top = this.stack._top();
+    return top;
+  }
+
+  // Retrieve the minimum elmement
+  getMin() {
+    const top = this.minStack._top();
+    return top;
+  }
+} -->
+
+<!-- 
+constructor(object) {
+  this.stack = Array.isArray(object) ? object : [];
+}
+
+push(element) {
+  // this.stack.push(element);
+  this.storage[this.count++] = value;
+}
+
+// Removes the element on top of the stack
+pop() {
+  return this.stack.shift();
+}
+
+// Get the top element
+top() {
+  return this.stack[0];
+} -->

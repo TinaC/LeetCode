@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>array</title>
+    <meta charset="utf-8" />
+    <script>
+      function init() {
+        const testCases = [
+          // [1, 7, 9, 5, 7, 8, 10],
+          [1, 2, 9, 2, 7, 9, 10],
+          [1, 2, 9, 7, 2, 9, 2],
+          [10, 2, 3, 4, 5, 7, 1],
+          [1, 2, 3, 7, 2, 9, 10]
+        ];
+        const expects = [
+          // "(1, 5)",
+          "(2, 4)",
+          "(2, 6)",
+          "(0, 6)",
+          "(2, 4)"
+        ];
+
+        for (let i = 0; i < testCases.length; i++) {
+          console.log("input:");
+          console.log(testCases[i].toString());
+          console.log("expect:");
+          console.log(expects[i].toString());
+          console.log("result:");
+          console.log(getRange(testCases[i]).toString());
+        }
+      }
+
+      function getRange(inputArray) {
+        const length = inputArray.length;
+        let startIndex, endIndex;
+
+        // start index
+        for (var startSplit = 0; startSplit < length; startSplit++) {
+          if (inputArray[startSplit + 1] < inputArray[startSplit]) {
+            break;
+          }
+          if (startSplit === length - 1) {
+            return `(0, 0)`;
+          }
+        }
+
+        // find the smallest element
+        let startElement = inputArray[startSplit + 1];
+        for (var x = startSplit + 1; x < length; x++) {
+          if (startElement > inputArray[x]) {
+            startElement = inputArray[x];
+          }
+        }
+
+        for (var y = 0; y <= startSplit; y++) {
+          if (inputArray[y] > startElement) {
+            startIndex = y;
+            break;
+          }
+          if (y === length - 1) {
+            startIndex = length - 1;
+          }
+        }
+
+        // end index
+        for (var endSplit = length - 1; endSplit > startIndex; endSplit--) {
+          if (inputArray[endSplit - 1] > inputArray[endSplit]) {
+            break;
+          }
+        }
+
+        // find the biggest element
+        let endElement = inputArray[endSplit - 1];
+        for (var y = endSplit - 1; y > startIndex; y--) {
+          if (endElement < inputArray[y]) {
+            endElement = inputArray[y];
+          }
+        }
+
+        for (var y = length - 1; y >= endSplit; y--) {
+          if (inputArray[y] < endElement) {
+            endIndex = y;
+            break;
+          }
+          if (y === endSplit) {
+            endIndex = endSplit;
+          }
+        }
+
+        return `(${startIndex}, ${endIndex})`;
+      }
+    </script>
+  </head>
+
+  <body onload="init()"></body>
+</html>
+<!-- 
+function getRange(inputArray) {
+  const length = inputArray.length;
+  const sortArray = inputArray.slice().sort((a, b) => a - b); // O(nlogn)
+
+  for (var i = 0; i < length; i++) { // O(n)
+    if (sortArray[i] !== inputArray[i]) {
+      break;
+    }
+  }
+
+  for (var j = length - 1; j > i; j--) {
+    if (sortArray[j] !== inputArray[j]) {
+      break;
+    }
+  }
+
+  if (i === length) {
+    return `(0, 0)`;
+  }
+
+  return `(${i}, ${j})`;
+} -->
+
+<!-- 
+function getRange(inputArray) {
+  const length = inputArray.length;
+  const sortArray = inputArray.slice().sort((a, b) => a - b);
+  let start = -1,
+    end = -1;
+  let findStart = false,
+    findEnd = false;
+
+  for (let i = 0; i < length; i++) {
+    const match = sortArray[i] === inputArray[i];
+    if (!match && !findStart) {
+      start = i;
+      findStart = true;
+    }
+
+    if (findStart && match) {
+      end = i - 1;
+      findEnd = true;
+    }
+
+    if (!match) {
+      findEnd = false;
+      if (i === length - 1) {
+        end = length - 1;
+      }
+    }
+  }
+
+  if (start === -1) {
+    return `(?)`;
+  }
+
+  return `(${start}, ${end})`;
+} -->
+
+<!-- 
+function getRange(inputArray) {
+  const length = inputArray.length;
+  const sortArray = inputArray.slice().sort((a, b) => a - b);
+  let start = -1, end = -1;
+  let findStart = false, findEnd = false;
+
+  for (let i = 0; i < length; i++) {
+    if ((sortArray[i] != inputArray[i]) && !findStart) {
+      console.log(`start is ${i}`);
+      start = i;
+      findStart = true;
+    }
+
+    if (findStart && !findEnd && sortArray[i] === inputArray[i]) {
+      console.log(`end is ${i}`);
+      end = i - 1;
+      findEnd = true;
+    }
+
+    if (findStart && findEnd && sortArray[i] !== inputArray[i]) {
+      if (i === length - 1) {
+        console.log(`till the end`);
+        end = length - 1
+      } else {
+        console.log(`reset end : ${i}`);
+        end = -1;
+        findEnd = false;
+      }
+
+    }
+  }
+
+  if (start === -1) {
+    return `(?)`;
+  }
+
+  return `(${start}, ${end})`;
+} -->
