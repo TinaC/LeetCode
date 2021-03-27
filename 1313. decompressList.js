@@ -8,3 +8,18 @@ let decompressRLElist = function test(nums) {
   }
   return result;
 };
+
+// Array(3).fill(6)
+// (3) [6, 6, 6]
+
+// [...acc, ...Array(arr[i - 1]).fill(cur)]
+// [...[1,2,3], ...Array(3).fill(6)]
+// (6) [1, 2, 3, 6, 6, 6]
+
+var decompressRLElist = function(nums) {
+   return nums.reduce(
+     (acc, cur, i, arr) =>
+       i % 2 ? [...acc, ...Array(arr[i - 1]).fill(cur)] : acc,
+     []
+   );
+ };
