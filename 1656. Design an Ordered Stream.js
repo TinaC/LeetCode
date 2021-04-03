@@ -6,6 +6,8 @@ const OrderedStream = function f(n) {
   this.pointer = 1;
 };
 
+// https://leetcode.com/problems/design-an-ordered-stream/discuss/1078564/JavaScript-Elegant-solution-using-an-array-and-pointer-(with-explanation)
+
 /**
  * @param {number} idKey
  * @param {string} value
@@ -15,16 +17,24 @@ OrderedStream.prototype.insert = function f(idKey, value) {
   this.stream.set(idKey, value);
   const result = [];
 
-  if (idKey === this.pointer) {
-    result.push(value);
+  // Each time we insert, we will check whether pointer has value
+  // If pointer next has value, it must be the newly insert one
+  while (this.stream.get(this.pointer)) {
+    result.push(this.stream.get(this.pointer));
     this.pointer++;
-    let i = idKey + 1;
-    while (this.stream.has(i)) {
-      result.push(this.stream.get(i));
-      i++;
-      this.pointer++;
-    }
   }
+
+  //   if (idKey === this.pointer) {
+  //     result.push(value);
+
+  //     this.pointer++;
+  //     let i = idKey + 1;
+  //     while (this.stream.has(i)) {
+  //       result.push(this.stream.get(i));
+  //       i++;
+  //       this.pointer++;
+  //     }
+  //   }
   return result;
 };
 
